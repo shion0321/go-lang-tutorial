@@ -3,7 +3,7 @@ package main
 import (
     "github.com/labstack/echo"
     "github.com/labstack/echo/middleware"
-    "./handler"
+    "hoge/handler"
 )
 
 func main() {
@@ -13,10 +13,11 @@ func main() {
     // 全てのリクエストで差し込みたいミドルウェア（ログとか）はここ
     e.Use(middleware.Logger())
     e.Use(middleware.Recover())
+		e.Use(interceptor.BasicAuth())
 
     // ルーティング
-    e.GET("/hello", handler.MainPage())
+    e.GET("/hello/:username", handler.MainPage(),interceptor.BasicAuth())
 
     // サーバー起動
-    e.Start(":1323")    //ポート番号指定してね
+    e.Start(":8080")    //ポート番号指定してね
 }
